@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1430328674 source:/home/kenoba10/Projects/Cubular/src/main.cpp
+	<iostream>
+	"core/window.h"
+
+1430356109 source:/home/kenoba10/Projects/Cubular/src/core/window.cpp
+	"window.h"
+
+1430356122 /home/kenoba10/Projects/Cubular/src/core/window.h
+	<GLFW/glfw3.h>
+
