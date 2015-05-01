@@ -1,7 +1,9 @@
 #include "window.h"
 
-Window::Window()
+Window::Window(Game* game)
 {
+
+    this->game = game;
 
     running = false;
 
@@ -48,7 +50,7 @@ bool Window::getRunning() const
 void Window::setRunning(const bool& running)
 {
 
-    (*this).running = running;
+    this->running = running;
 
 }
 
@@ -89,8 +91,12 @@ void Window::init()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     window = glfwCreateWindow(1080, 720, "Cubular", nullptr, nullptr);
-
     glfwMakeContextCurrent(window);
+
+    glewInit();
+    initGL();
+
+    game->init();
 
 }
 
@@ -99,10 +105,16 @@ void Window::update()
 
     glfwPollEvents();
 
+    game->update();
+
 }
 
 void Window::render()
 {
+
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    game->render();
 
     glfwSwapBuffers(window);
 
@@ -111,8 +123,26 @@ void Window::render()
 void Window::term()
 {
 
+    game->term();
+
     glfwDestroyWindow(window);
 
     glfwTerminate();
+
+}
+
+void Window::initGL()
+{
+
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_CLAMP);
+
+    glFrontFace(GL_CW);
+    glCullFace(GL_BACK);
+
+    glDepthFunc(GL_LESS);
 
 }

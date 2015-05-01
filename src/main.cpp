@@ -1,11 +1,11 @@
-#include <iostream>
-
+#include "core/game.h"
 #include "core/window.h"
 
 int main()
 {
 
-    Window window;
+    Game game;
+    Window window(&game);
 
     window.run();
 
