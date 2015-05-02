@@ -37,3 +37,10 @@ void Game::term()
     std::cout << "Terminating!\n";
 
 }
+
+void Game::setWindow(Window* window)
+{
+
+    this->window = window;
+
+}

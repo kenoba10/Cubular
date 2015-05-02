@@ -1,19 +1,27 @@
 # depslib dependency file v1.0
-1430438199 source:/home/kenoba10/Projects/Cubular/src/main.cpp
+1430597872 source:/home/kenoba10/Projects/Cubular/src/main.cpp
 	"core/game.h"
 	"core/window.h"
 
-1430438155 source:/home/kenoba10/Projects/Cubular/src/core/window.cpp
+1430599716 source:/home/kenoba10/Projects/Cubular/src/core/window.cpp
 	"window.h"
 
-1430437925 /home/kenoba10/Projects/Cubular/src/core/window.h
+1430597911 /home/kenoba10/Projects/Cubular/src/core/window.h
 	<GL/glew.h>
 	<GLFW/glfw3.h>
+	"input.h"
 	"game.h"
 
-1430438329 source:/home/kenoba10/Projects/Cubular/src/core/game.cpp
+1430599885 source:/home/kenoba10/Projects/Cubular/src/core/game.cpp
 	"game.h"
 
-1430438317 /home/kenoba10/Projects/Cubular/src/core/game.h
+1430597903 /home/kenoba10/Projects/Cubular/src/core/game.h
 	<iostream>
+	"window.h"
+
+1430599298 source:/home/kenoba10/Projects/Cubular/src/core/input.cpp
+	"input.h"
+
+1430599270 /home/kenoba10/Projects/Cubular/src/core/input.h
+	<GLFW/glfw3.h>
 

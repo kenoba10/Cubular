@@ -1,11 +1,20 @@
 #include "window.h"
 
+void sizeCallback(GLFWwindow* window, int width, int height)
+{
+
+    glViewport(0, 0, width, height);
+
+}
+
 Window::Window(Game* game)
 {
 
     this->game = game;
 
     running = false;
+
+    this->game->setWindow(this);
 
 }
 
@@ -40,6 +49,13 @@ void Window::run()
 
 }
 
+const Input& Window::getInput() const
+{
+
+    return *input;
+
+}
+
 bool Window::getRunning() const
 {
 
@@ -47,7 +63,14 @@ bool Window::getRunning() const
 
 }
 
-void Window::setRunning(const bool& running)
+void Window::setInput(const Input& input)
+{
+
+    *(this->input) = input;
+
+}
+
+void Window::setRunning(bool running)
 {
 
     this->running = running;
@@ -76,7 +99,7 @@ void Window::init()
     glfwWindowHint(GLFW_ACCUM_BLUE_BITS, 0);
     glfwWindowHint(GLFW_ACCUM_ALPHA_BITS, 0);
     glfwWindowHint(GLFW_AUX_BUFFERS, 0);
-    glfwWindowHint(GLFW_SAMPLES, 4);
+    glfwWindowHint(GLFW_SAMPLES, 0);
     glfwWindowHint(GLFW_REFRESH_RATE, GLFW_DONT_CARE);
     glfwWindowHint(GLFW_STEREO, GL_FALSE);
     glfwWindowHint(GLFW_SRGB_CAPABLE, GL_FALSE);
@@ -91,6 +114,10 @@ void Window::init()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     window = glfwCreateWindow(1080, 720, "Cubular", nullptr, nullptr);
+    input = new Input(window);
+
+    glfwSetFramebufferSizeCallback(window, sizeCallback);
+
     glfwMakeContextCurrent(window);
 
     glewInit();
@@ -106,6 +133,20 @@ void Window::update()
     glfwPollEvents();
 
     game->update();
+
+    for(unsigned int i = 0; i < NUM_KEYS; i++)
+    {
+
+        input->setKey(i, glfwGetKey(window, i) == GLFW_PRESS);
+
+    }
+
+    for(unsigned int i = 0; i < NUM_MOUSEBUTTONS; i++)
+    {
+
+        input->setMouseButton(i, glfwGetMouseButton(window, i) == GLFW_PRESS);
+
+    }
 
 }
 

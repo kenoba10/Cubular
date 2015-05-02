@@ -1,7 +1,11 @@
 #ifndef GAME_H
 #define GAME_H
 
+class Game;
+
 #include <iostream>
+
+#include "window.h"
 
 class Game
 {
@@ -13,8 +17,10 @@ class Game
         void update();
         void render();
         void term();
+        void setWindow(Window* window);
     protected:
     private:
+        Window* window;
 
 };
 
