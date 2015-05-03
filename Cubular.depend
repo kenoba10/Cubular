@@ -3,7 +3,7 @@
 	"core/game.h"
 	"core/window.h"
 
-1430599716 source:/home/kenoba10/Projects/Cubular/src/core/window.cpp
+1430599983 source:/home/kenoba10/Projects/Cubular/src/core/window.cpp
 	"window.h"
 
 1430597911 /home/kenoba10/Projects/Cubular/src/core/window.h
@@ -24,4 +24,10 @@
 
 1430599270 /home/kenoba10/Projects/Cubular/src/core/input.h
 	<GLFW/glfw3.h>
+
+1430662573 source:/home/kenoba10/Projects/Cubular/src/core/math3d.cpp
+	"math3d.h"
+
+1430662289 /home/kenoba10/Projects/Cubular/src/core/math3d.h
+	<math.h>
 
