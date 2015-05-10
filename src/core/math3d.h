@@ -104,6 +104,7 @@ struct Matrix3
         ~Matrix3();
         void createIdentity();
         Matrix3 operator*(Matrix3 other) const;
+        float* getValues() const;
         float getValue(unsigned int x, unsigned int y) const;
         void setValue(unsigned int x, unsigned int y, float value);
     protected:
@@ -125,6 +126,7 @@ struct Matrix4
         void createOrthographic(float left, float right, float bottom, float top, float zNear, float zFar);
         void createPerspective(float fov, float aspect, float zNear, float zFar);
         Matrix4 operator*(Matrix4 other) const;
+        float* getValues() const;
         float getValue(unsigned int x, unsigned int y) const;
         void setValue(unsigned int x, unsigned int y, float value);
     protected:

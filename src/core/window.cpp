@@ -120,6 +120,8 @@ void Window::init()
 
     glfwMakeContextCurrent(window);
 
+    glewExperimental = GL_TRUE;
+
     glewInit();
     initGL();
 
@@ -178,12 +180,8 @@ void Window::initGL()
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     glEnable(GL_CULL_FACE);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_DEPTH_CLAMP);
 
     glFrontFace(GL_CW);
     glCullFace(GL_BACK);
-
-    glDepthFunc(GL_LESS);
 
 }

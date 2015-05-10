@@ -416,6 +416,27 @@ Matrix3 Matrix3::operator*(Matrix3 other) const
 
 }
 
+float* Matrix3::getValues() const
+{
+
+    static float vals[3 * 3];
+
+    vals[0] = values[0][0];
+    vals[1] = values[0][1];
+    vals[2] = values[0][2];
+
+    vals[3] = values[1][0];
+    vals[4] = values[1][1];
+    vals[5] = values[1][2];
+
+    vals[6] = values[2][0];
+    vals[7] = values[2][1];
+    vals[8] = values[2][2];
+
+    return vals;
+
+}
+
 float Matrix3::getValue(unsigned int x, unsigned int y) const
 {
 
@@ -508,6 +529,35 @@ Matrix4 Matrix4::operator*(Matrix4 other) const
     }
 
     return result;
+
+}
+
+float* Matrix4::getValues() const
+{
+
+    static float vals[4 * 4];
+
+    vals[0] = values[0][0];
+    vals[1] = values[0][1];
+    vals[2] = values[0][2];
+    vals[2] = values[0][3];
+
+    vals[4] = values[1][0];
+    vals[5] = values[1][1];
+    vals[6] = values[1][2];
+    vals[7] = values[1][3];
+
+    vals[8] = values[2][0];
+    vals[9] = values[2][1];
+    vals[10] = values[2][2];
+    vals[11] = values[2][3];
+
+    vals[12] = values[3][0];
+    vals[13] = values[3][1];
+    vals[14] = values[3][2];
+    vals[15] = values[3][3];
+
+    return vals;
 
 }
 

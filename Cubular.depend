@@ -1,23 +1,27 @@
 # depslib dependency file v1.0
-1430597872 source:/home/kenoba10/Projects/Cubular/src/main.cpp
-	"core/game.h"
-	"core/window.h"
-
-1430599983 source:/home/kenoba10/Projects/Cubular/src/core/window.cpp
+1431129058 source:/home/kenoba10/Projects/Cubular/src/main.cpp
+	"game.h"
 	"window.h"
 
-1430597911 /home/kenoba10/Projects/Cubular/src/core/window.h
+1431292832 source:/home/kenoba10/Projects/Cubular/src/core/window.cpp
+	"window.h"
+
+1431208689 /home/kenoba10/Projects/Cubular/src/core/window.h
 	<GL/glew.h>
 	<GLFW/glfw3.h>
 	"input.h"
 	"game.h"
 
-1430599885 source:/home/kenoba10/Projects/Cubular/src/core/game.cpp
+1431292667 source:/home/kenoba10/Projects/Cubular/src/core/game.cpp
 	"game.h"
 
-1430597903 /home/kenoba10/Projects/Cubular/src/core/game.h
+1431222954 /home/kenoba10/Projects/Cubular/src/core/game.h
 	<iostream>
 	"window.h"
+	"shader.h"
+	"mesh.h"
+	"fileutils.h"
+	"osutils.h"
 
 1430599298 source:/home/kenoba10/Projects/Cubular/src/core/input.cpp
 	"input.h"
@@ -25,9 +29,37 @@
 1430599270 /home/kenoba10/Projects/Cubular/src/core/input.h
 	<GLFW/glfw3.h>
 
-1430662573 source:/home/kenoba10/Projects/Cubular/src/core/math3d.cpp
+1431294805 source:/home/kenoba10/Projects/Cubular/src/core/math3d.cpp
 	"math3d.h"
 
-1430662289 /home/kenoba10/Projects/Cubular/src/core/math3d.h
+1431294651 /home/kenoba10/Projects/Cubular/src/core/math3d.h
 	<math.h>
+
+1431294710 source:/home/kenoba10/Projects/Cubular/src/rendering/shader.cpp
+	"shader.h"
+
+1430684928 /home/kenoba10/Projects/Cubular/src/rendering/shader.h
+	<iostream>
+	<string>
+	<GL/glew.h>
+	"math3d.h"
+
+1431265263 source:/home/kenoba10/Projects/Cubular/src/rendering/mesh.cpp
+	"mesh.h"
+
+1431221887 /home/kenoba10/Projects/Cubular/src/rendering/mesh.h
+	<GL/glew.h>
+
+1431175781 source:/home/kenoba10/Projects/Cubular/src/utils/fileutils.cpp
+	"fileutils.h"
+
+1431175813 /home/kenoba10/Projects/Cubular/src/utils/fileutils.h
+	<fstream>
+	<string>
+
+1431224271 source:/home/kenoba10/Projects/Cubular/src/utils/osutils.cpp
+	"osutils.h"
+
+1431210959 /home/kenoba10/Projects/Cubular/src/utils/osutils.h
+	<string>
 
