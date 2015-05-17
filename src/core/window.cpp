@@ -49,6 +49,30 @@ void Window::run()
 
 }
 
+int Window::getWidth() const
+{
+
+    int width;
+    int height;
+
+    glfwGetFramebufferSize(window, &width, &height);
+
+    return width;
+
+}
+
+int Window::getHeight() const
+{
+
+    int width;
+    int height;
+
+    glfwGetFramebufferSize(window, &width, &height);
+
+    return height;
+
+}
+
 const Input& Window::getInput() const
 {
 
@@ -155,7 +179,7 @@ void Window::update()
 void Window::render()
 {
 
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     game->render();
 
@@ -167,6 +191,8 @@ void Window::term()
 {
 
     game->term();
+
+    delete input;
 
     glfwDestroyWindow(window);
 
@@ -180,8 +206,12 @@ void Window::initGL()
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     glEnable(GL_CULL_FACE);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_CLAMP);
 
     glFrontFace(GL_CW);
     glCullFace(GL_BACK);
+
+    glDepthFunc(GL_LESS);
 
 }

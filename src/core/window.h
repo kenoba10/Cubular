@@ -16,6 +16,8 @@ class Window
         Window(Game* game);
         ~Window();
         void run();
+        int getWidth() const;
+        int getHeight() const;
         const Input& getInput() const;
         bool getRunning() const;
         void setInput(const Input& input);

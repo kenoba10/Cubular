@@ -3,11 +3,6 @@
 
 class Input;
 
-#define NUM_KEYS 512
-#define NUM_MOUSEBUTTONS 3
-
-#include <GLFW/glfw3.h>
-
 enum Key
 {
 
@@ -124,6 +119,11 @@ enum MouseButton
     MOUSEBUTTON_MIDDLE = 2
 
 };
+
+#define NUM_KEYS 512
+#define NUM_MOUSEBUTTONS 3
+
+#include <GLFW/glfw3.h>
 
 class Input
 {

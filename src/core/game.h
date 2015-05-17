@@ -3,13 +3,8 @@
 
 class Game;
 
-#include <iostream>
-
 #include "window.h"
-#include "shader.h"
-#include "mesh.h"
-#include "fileutils.h"
-#include "osutils.h"
+#include "voxelengine.h"
 
 class Game
 {
@@ -25,8 +20,7 @@ class Game
     protected:
     private:
         Window* window;
-        Shader* shader;
-        Mesh* mesh;
+        VoxelEngine* voxelEngine;
 
 };
 

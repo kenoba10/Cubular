@@ -504,10 +504,59 @@ void Matrix4::createScale(Vector3 scale)
 void Matrix4::createOrthographic(float left, float right, float bottom, float top, float zNear, float zFar)
 {
 
+    float width = right - left;
+    float height = top - bottom;
+    float depth = zFar - zNear;
+
+    values[0][0] = 2.0f / width;
+    values[0][1] = 0;
+    values[0][2] = 0;
+    values[0][3] = -(right + left) / width;
+
+    values[1][0] = 0;
+    values[1][1] = 2.0f / height;
+    values[1][2] = 0;
+    values[1][3] = -(top + bottom) / height;
+
+    values[2][0] = 0;
+    values[2][1] = 0;
+    values[2][2] = -2.0f / depth;
+    values[2][3] = -(zFar + zNear) / depth;
+
+    values[3][0] = 0;
+    values[3][1] = 0;
+    values[3][2] = 0;
+    values[3][3] = 1;
+
 }
 
 void Matrix4::createPerspective(float fov, float aspect, float zNear, float zFar)
 {
+
+    float bottom = -(zNear * tan(0.5f * fov));
+    float top = -bottom;
+    float left = bottom * aspect;
+    float right = top * aspect;
+
+    values[0][0] = (2.0f * zNear) / (right - left);
+    values[0][1] = 0;
+    values[0][2] = 0;
+    values[0][3] = 0;
+
+    values[1][0] = 0;
+    values[1][1] = (2.0f * zNear) / (top - bottom);
+    values[1][2] = 0;
+    values[1][3] = 0;
+
+    values[2][0] = (right + left) / (right - left);
+    values[2][1] = (top + bottom) / (top - bottom);
+    values[2][2] = -(zFar + zNear) / (zFar - zNear);
+    values[2][3] = -1;
+
+    values[3][0] = 0;
+    values[3][1] = 0;
+    values[3][2] = -(2.0f * zFar * zNear) / (zFar - zNear);
+    values[3][3] = 0;
 
 }
 
