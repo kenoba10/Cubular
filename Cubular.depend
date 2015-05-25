@@ -3,16 +3,16 @@
 	"game.h"
 	"window.h"
 
-1431893822 source:/home/kenoba10/Projects/Cubular/src/core/window.cpp
+1432575210 source:/home/kenoba10/Projects/Cubular/src/core/window.cpp
 	"window.h"
 
-1431879653 /home/kenoba10/Projects/Cubular/src/core/window.h
+1432575203 /home/kenoba10/Projects/Cubular/src/core/window.h
 	<GL/glew.h>
 	<GLFW/glfw3.h>
 	"input.h"
 	"game.h"
 
-1431901096 source:/home/kenoba10/Projects/Cubular/src/core/game.cpp
+1432505529 source:/home/kenoba10/Projects/Cubular/src/core/game.cpp
 	"game.h"
 
 1431884689 /home/kenoba10/Projects/Cubular/src/core/game.h
@@ -25,10 +25,10 @@
 1431468247 /home/kenoba10/Projects/Cubular/src/core/input.h
 	<GLFW/glfw3.h>
 
-1431879259 source:/home/kenoba10/Projects/Cubular/src/core/math3d.cpp
+1432574774 source:/home/kenoba10/Projects/Cubular/src/core/math3d.cpp
 	"math3d.h"
 
-1431294651 /home/kenoba10/Projects/Cubular/src/core/math3d.h
+1432574745 /home/kenoba10/Projects/Cubular/src/core/math3d.h
 	<math.h>
 
 1431294710 source:/home/kenoba10/Projects/Cubular/src/rendering/shader.cpp
@@ -59,14 +59,16 @@
 1431210959 /home/kenoba10/Projects/Cubular/src/utils/osutils.h
 	<string>
 
-1431884454 /home/kenoba10/Projects/Cubular/src/voxel/voxelengine.h
+1432505546 /home/kenoba10/Projects/Cubular/src/voxel/voxelengine.h
+	"window.h"
 	"math3d.h"
 	"shader.h"
+	"player.h"
 	"world.h"
 	"fileutils.h"
 	"osutils.h"
 
-1431893695 source:/home/kenoba10/Projects/Cubular/src/voxel/voxelengine.cpp
+1432505622 source:/home/kenoba10/Projects/Cubular/src/voxel/voxelengine.cpp
 	"voxelengine.h"
 
 1431901886 /home/kenoba10/Projects/Cubular/src/voxel/world.h
@@ -89,9 +91,17 @@
 	"math3d.h"
 	"mesh.h"
 
-1431902913 source:/home/kenoba10/Projects/Cubular/src/voxel/block.cpp
+1432507673 source:/home/kenoba10/Projects/Cubular/src/voxel/block.cpp
 	"block.h"
 
 1431902906 source:/home/kenoba10/Projects/Cubular/src/voxel/chunk.cpp
 	"chunk.h"
+
+1432577756 /home/kenoba10/Projects/Cubular/src/voxel/player.h
+	"window.h"
+	"input.h"
+	"math3d.h"
+
+1432577942 source:/home/kenoba10/Projects/Cubular/src/voxel/player.cpp
+	"player.h"
 

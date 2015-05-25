@@ -489,15 +489,79 @@ void Matrix4::createIdentity()
 void Matrix4::createTranslation(Vector3 translation)
 {
 
+    values[0][0] = 1;
+    values[0][1] = 0;
+    values[0][2] = 0;
+    values[0][3] = 0;
+
+    values[1][0] = 0;
+    values[1][1] = 1;
+    values[1][2] = 0;
+    values[1][3] = 0;
+
+    values[2][0] = 0;
+    values[2][1] = 0;
+    values[2][2] = 1;
+    values[2][3] = 0;
+
+    values[3][0] = translation.getX();
+    values[3][1] = translation.getY();
+    values[3][2] = translation.getZ();
+    values[3][3] = 1;
+
 }
 
 void Matrix4::createRotation(Quaternion rotation)
 {
 
+    Vector3 right(1.0f - 2.0f * (rotation.getValues().getY() * rotation.getValues().getY() + rotation.getValues().getZ() * rotation.getValues().getZ()), 2.0f * (rotation.getValues().getX() * rotation.getValues().getY() - rotation.getValues().getW() * rotation.getValues().getZ()), 2.0f * (rotation.getValues().getX() * rotation.getValues().getZ() + rotation.getValues().getW() * rotation.getValues().getY()));
+    Vector3 up(2.0f * (rotation.getValues().getX() * rotation.getValues().getY() + rotation.getValues().getW() * rotation.getValues().getZ()), 1.0f - 2.0f * (rotation.getValues().getX() * rotation.getValues().getX() + rotation.getValues().getZ() * rotation.getValues().getZ()), 2.0f * (rotation.getValues().getY() * rotation.getValues().getZ() - rotation.getValues().getW() * rotation.getValues().getX()));
+    Vector3 forward(2.0f * (rotation.getValues().getX() * rotation.getValues().getZ() - rotation.getValues().getW() * rotation.getValues().getY()), 2.0f * (rotation.getValues().getY() * rotation.getValues().getZ() + rotation.getValues().getW() * rotation.getValues().getX()), 1.0f - 2.0f * (rotation.getValues().getX() * rotation.getValues().getX() + rotation.getValues().getY() * rotation.getValues().getY()));
+
+    values[0][0] = right.getX();
+    values[0][1] = up.getX();
+    values[0][2] = forward.getX();
+    values[0][3] = 0;
+
+    values[1][0] = right.getY();
+    values[1][1] = up.getY();
+    values[1][2] = forward.getY();
+    values[1][3] = 0;
+
+    values[2][0] = right.getZ();
+    values[2][1] = up.getZ();
+    values[2][2] = forward.getZ();
+    values[2][3] = 0;
+
+    values[3][0] = 0;
+    values[3][1] = 0;
+    values[3][2] = 0;
+    values[3][3] = 1;
+
 }
 
 void Matrix4::createScale(Vector3 scale)
 {
+
+    values[0][0] = scale.getX();
+    values[0][1] = 0;
+    values[0][2] = 0;
+    values[0][3] = 0;
+
+    values[1][0] = 0;
+    values[1][1] = scale.getY();
+    values[1][2] = 0;
+    values[1][3] = 0;
+
+    values[2][0] = 0;
+    values[2][1] = 0;
+    values[2][2] = scale.getZ();
+    values[2][3] = 0;
+
+    values[3][0] = 0;
+    values[3][1] = 0;
+    values[3][2] = 0;
+    values[3][3] = 1;
 
 }
 
@@ -667,13 +731,15 @@ Quaternion Quaternion::normalized() const
 
 }
 
-Quaternion Quaternion::rotate(Vector3 axis, float angle)
+void Quaternion::rotate(Vector3 axis, float angle)
 {
 
     float sinHalfAngle = sin(angle / 2);
     float cosHalfAngle = cos(angle / 2);
 
-    return (*this) * Quaternion(axis.getX() * sinHalfAngle, axis.getY() * sinHalfAngle, axis.getZ() * sinHalfAngle, cosHalfAngle);
+    Quaternion rotated = (*this) * Quaternion(axis.getX() * sinHalfAngle, axis.getY() * sinHalfAngle, axis.getZ() * sinHalfAngle, cosHalfAngle);
+
+    *this = *this * rotated;
 
 }
 
@@ -682,7 +748,7 @@ Vector3 Quaternion::getLeft() const
 
     Quaternion left = (*this) * this->conjugate() * Vector3(-1.0f, 0.0f, 0.0f);
 
-    return Vector3(left.getValues().getX(), left.getValues().getY(), left.getValues().getZ());
+    return Vector3(left.getValues().getX(), left.getValues().getY(), left.getValues().getZ()).normalized();
 
 }
 
@@ -691,7 +757,7 @@ Vector3 Quaternion::getRight() const
 
     Quaternion right = (*this) * this->conjugate() * Vector3(1.0f, 0.0f, 0.0f);
 
-    return Vector3(right.getValues().getX(), right.getValues().getY(), right.getValues().getZ());
+    return Vector3(right.getValues().getX(), right.getValues().getY(), right.getValues().getZ()).normalized();
 
 }
 
@@ -700,7 +766,7 @@ Vector3 Quaternion::getDown() const
 
     Quaternion down = (*this) * this->conjugate() * Vector3(0.0f, -1.0f, 0.0f);
 
-    return Vector3(down.getValues().getX(), down.getValues().getY(), down.getValues().getZ());
+    return Vector3(down.getValues().getX(), down.getValues().getY(), down.getValues().getZ()).normalized();
 
 }
 
@@ -709,7 +775,7 @@ Vector3 Quaternion::getUp() const
 
     Quaternion up = (*this) * this->conjugate() * Vector3(0.0f, 1.0f, 0.0f);
 
-    return Vector3(up.getValues().getX(), up.getValues().getY(), up.getValues().getZ());
+    return Vector3(up.getValues().getX(), up.getValues().getY(), up.getValues().getZ()).normalized();
 
 }
 
@@ -718,7 +784,7 @@ Vector3 Quaternion::getForward() const
 
     Quaternion forward = (*this) * this->conjugate() * Vector3(0.0f, 0.0f, -1.0f);
 
-    return Vector3(forward.getValues().getX(), forward.getValues().getY(), forward.getValues().getZ());
+    return Vector3(forward.getValues().getX(), forward.getValues().getY(), forward.getValues().getZ()).normalized();
 
 }
 
@@ -727,7 +793,7 @@ Vector3 Quaternion::getBack() const
 
     Quaternion back = (*this) * this->conjugate() * Vector3(0.0f, 0.0f, 1.0f);
 
-    return Vector3(back.getValues().getX(), back.getValues().getY(), back.getValues().getZ());
+    return Vector3(back.getValues().getX(), back.getValues().getY(), back.getValues().getZ()).normalized();
 
 }
 

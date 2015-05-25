@@ -73,7 +73,7 @@ int Window::getHeight() const
 
 }
 
-const Input& Window::getInput() const
+Input& Window::getInput() const
 {
 
     return *input;

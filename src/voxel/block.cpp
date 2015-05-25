@@ -41,10 +41,10 @@ void Block::render()
 void Block::updateMesh()
 {
 
-    GLfloat vertices[12] = {-0.5f + x, -0.5f + y, 0.5f + z, -0.5f + x, 0.5f + y, 0.5f + z, 0.5f + x, 0.5f + y, 0.5f + z, 0.5f + x, -0.5f + y, 0.5f + z};
-    GLuint indicies[6] = {0, 1, 2, 0, 2, 3};
+    GLfloat vertices[24] = {-0.5f + x, -0.5f + y, 0.5f + z, -0.5f + x, 0.5f + y, 0.5f + z, 0.5f + x, 0.5f + y, 0.5f + z, 0.5f + x, -0.5f + y, 0.5f + z, -0.5f + x, -0.5f + y, -0.5f + z, -0.5f + x, 0.5f + y, -0.5f + z, 0.5f + x, 0.5f + y, -0.5f + z, 0.5f + x, -0.5f + y, -0.5f + z};
+    GLuint indicies[36] = {0, 1, 2, 0, 2, 3, 5, 1, 0, 5, 0, 4, 2, 6, 7, 2, 7, 3, 7, 4, 0, 3, 7, 0, 1, 5, 6, 1, 6, 2, 4, 5, 6, 4, 6, 7};
 
-    mesh = new Mesh(vertices, indicies, 4, 6);
+    mesh = new Mesh(vertices, indicies, 8, 36);
 
 }
 

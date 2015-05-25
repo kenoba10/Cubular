@@ -144,7 +144,7 @@ struct Quaternion
         Quaternion conjugate() const;
         void normalize();
         Quaternion normalized() const;
-        Quaternion rotate(Vector3 axis, float angle);
+        void rotate(Vector3 axis, float angle);
         Vector3 getLeft() const;
         Vector3 getRight() const;
         Vector3 getDown() const;

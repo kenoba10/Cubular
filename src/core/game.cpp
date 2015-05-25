@@ -13,7 +13,7 @@ Game::~Game()
 void Game::init()
 {
 
-    voxelEngine = new VoxelEngine();
+    voxelEngine = new VoxelEngine(window);
 
 }
 
