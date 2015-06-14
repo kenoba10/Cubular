@@ -3,9 +3,9 @@
 
 class Player;
 
-#include "window.h"
-#include "input.h"
-#include "math3d.h"
+#include "../core/window.h"
+#include "../core/input.h"
+#include "../core/math3d.h"
 
 class Player
 {

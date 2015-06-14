@@ -3,23 +3,47 @@
 World::World()
 {
 
-    setBlock(0, 0, -5);
-    setBlock(1, 1, -4);
+    for(int i = -8; i < 8; i++)
+    {
+
+        for(int j = -8; j < 0; j++)
+        {
+
+            for(int k = -8; k < 8; k++)
+            {
+
+                setBlock(i, j, -k);
+
+            }
+
+        }
+
+    }
 
 }
 
 World::~World()
 {
 
+    std::map<std::string, Chunk*>::iterator it = chunks.begin();
+
+    while(it != chunks.end())
+    {
+
+        delete it->second;
+        chunks.erase(it++);
+
+    }
+
 }
 
 void World::update()
 {
 
-    for(auto iterator : chunks)
+    for(std::map<std::string, Chunk*>::iterator it = chunks.begin(); it != chunks.end(); it++)
     {
 
-        iterator.second.update();
+        it->second->update();
 
     }
 
@@ -28,10 +52,10 @@ void World::update()
 void World::render()
 {
 
-    for(auto iterator : chunks)
+    for(std::map<std::string, Chunk*>::iterator it = chunks.begin(); it != chunks.end(); it++)
     {
 
-        iterator.second.render();
+        it->second->render();
 
     }
 
@@ -40,9 +64,13 @@ void World::render()
 Chunk* World::getChunk(int x, int y, int z)
 {
 
-    int chunkX = round(x / CHUNK_WIDTH);
-    int chunkY = round(y / CHUNK_WIDTH);
-    int chunkZ = round(z / CHUNK_WIDTH);
+    float modifiedX = (float)x / (float)CHUNK_WIDTH;
+    float modifiedY = (float)y / (float)CHUNK_WIDTH;
+    float modifiedZ = (float)z / (float)CHUNK_WIDTH;
+
+    int chunkX = (modifiedX < 0.0f) ? ceil(modifiedX - 0.5f) : floor(modifiedX + 0.5f);
+    int chunkY = (modifiedY < 0.0f) ? ceil(modifiedY - 0.5f) : floor(modifiedY + 0.5f);
+    int chunkZ = (modifiedZ < 0.0f) ? ceil(modifiedZ - 0.5f) : floor(modifiedZ + 0.5f);
 
     std::stringstream chunkName;
     chunkName << chunkX << std::endl << chunkY << std::endl << chunkZ;
@@ -50,11 +78,11 @@ Chunk* World::getChunk(int x, int y, int z)
     if(chunks.find(chunkName.str()) == chunks.end())
     {
 
-        chunks[chunkName.str()] = Chunk();
+        chunks[chunkName.str()] = new Chunk();
 
     }
 
-    return &chunks[chunkName.str()];
+    return chunks[chunkName.str()];
 
 }
 
@@ -65,9 +93,9 @@ Block* World::getBlock(int x, int y, int z)
 
 }
 
-void World::setBlock(int x, int y, int z)
+void World::setBlock(int x, int y, int z, bool air)
 {
 
-    getChunk(x, y, z)->setBlock(x, y, z);
+    getChunk(x, y, z)->setBlock(x, y, z, air);
 
 }

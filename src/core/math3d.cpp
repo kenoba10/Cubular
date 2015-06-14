@@ -15,69 +15,71 @@ Vector2::~Vector2()
 
 float Vector2::length() const
 {
-
-    return sqrt(x * x + y * y);
+    
+    return glm::length(glm::vec2(x, y));
 
 }
 
 float Vector2::dot(Vector2 other) const
 {
 
-    return x * other.getX() + y * other.getY();
-
-}
-
-float Vector2::cross(Vector2 other) const
-{
-
-    return x * y - y * x;
+    return glm::dot(glm::vec2(x, y), glm::vec2(other.getX(), other.getY()));
 
 }
 
 void Vector2::normalize()
 {
 
-    float size = length();
-
-    x /= size;
-    y /= size;
+    glm::vec2 vector = glm::normalize(glm::vec2(x, y));
+    
+    x = vector.x;
+    y = vector.y;
 
 }
 
 Vector2 Vector2::normalized() const
 {
 
-    float size = length();
-
-    return Vector2(x / size, y / size);
+    Vector2 vector(x, y);
+    vector.normalize();
+    
+    return vector;
 
 }
 
 Vector2 Vector2::operator+(Vector2 other) const
 {
 
-    return Vector2(x + other.getX(), y + other.getY());
+    glm::vec2 vector = glm::vec2(x, y) + glm::vec2(other.getX(), other.getY());
+    
+    return Vector2(vector.x, vector.y);
 
 }
 
 Vector2 Vector2::operator-(Vector2 other) const
 {
 
-    return Vector2(x - other.getX(), y - other.getY());
+    glm::vec2 vector = glm::vec2(x, y) - glm::vec2(other.getX(), other.getY());
+    
+    return Vector2(vector.x, vector.y);
 
 }
 
 Vector2 Vector2::operator*(Vector2 other) const
 {
 
-    return Vector2(x * other.getX(), y * other.getY());
+    glm::vec2 vector = glm::vec2(x, y) * glm::vec2(other.getX(), other.getY());
+    
+    return Vector2(vector.x, vector.y);
 
 }
 
 Vector2 Vector2::operator/(Vector2 other) const
 {
 
-    return Vector2(x / other.getX(), y / other.getY());
+    glm::vec2 vector = glm::vec2(x, y) / glm::vec2(other.getX(), other.getY());
+    
+    return Vector2(vector.x, vector.y);
 
 }
 
@@ -126,69 +128,91 @@ Vector3::~Vector3()
 float Vector3::length() const
 {
 
-    return sqrt(x * x + y * y + z * z);
+    return glm::length(glm::vec3(x, y, z));
 
 }
 
 float Vector3::dot(Vector3 other) const
 {
 
-    return x * other.getX() + y * other.getY() + z * other.getZ();
+    return glm::dot(glm::vec3(x, y, z), glm::vec3(other.getX(), other.getY(), other.getZ()));
 
 }
 
 Vector3 Vector3::cross(Vector3 other) const
 {
 
-    return Vector3(y * other.getZ() - z * other.getY(), z * other.getX() - x * other.getZ(), x * other.getY() - y * other.getX());
+    glm::vec3 vector = glm::cross(glm::vec3(x, y, z), glm::vec3(other.getX(), other.getY(), other.getZ()));
+    
+    return Vector3(vector.x, vector.y, vector.z);
 
 }
 
 void Vector3::normalize()
 {
 
-    float size = length();
-
-    x /= size;
-    y /= size;
-    z /= size;
+    glm::vec3 vector = glm::normalize(glm::vec3(x, y, z));
+    
+    x = vector.x;
+    y = vector.y;
+    z = vector.z;
 
 }
 
 Vector3 Vector3::normalized() const
 {
 
-    float size = length();
+    Vector3 vector(x, y, z);
+    vector.normalize();
+    
+    return vector;
 
-    return Vector3(x / size, y / size, z / size);
+}
 
+void Vector3::rotate(Quaternion rotation)
+{
+    
+    Quaternion rotated = rotation.conjugate() * *this * rotation;
+    
+    x = rotated.getValues().getX();
+    y = rotated.getValues().getY();
+    z = rotated.getValues().getZ();
+    
 }
 
 Vector3 Vector3::operator+(Vector3 other) const
 {
 
-    return Vector3(x + other.getX(), y + other.getY(), z + other.getZ());
+    glm::vec3 vector = glm::vec3(x, y, z) + glm::vec3(other.getX(), other.getY(), other.getZ());
+    
+    return Vector3(vector.x, vector.y, vector.z);
 
 }
 
 Vector3 Vector3::operator-(Vector3 other) const
 {
 
-    return Vector3(x - other.getX(), y - other.getY(), z - other.getZ());
+    glm::vec3 vector = glm::vec3(x, y, z) - glm::vec3(other.getX(), other.getY(), other.getZ());
+    
+    return Vector3(vector.x, vector.y, vector.z);
 
 }
 
 Vector3 Vector3::operator*(Vector3 other) const
 {
 
-    return Vector3(x * other.getX(), y * other.getY(), z * other.getZ());
+    glm::vec3 vector = glm::vec3(x, y, z) * glm::vec3(other.getX(), other.getY(), other.getZ());
+    
+    return Vector3(vector.x, vector.y, vector.z);
 
 }
 
 Vector3 Vector3::operator/(Vector3 other) const
 {
 
-    return Vector3(x / other.getX(), y / other.getY(), z / other.getZ());
+    glm::vec3 vector = glm::vec3(x, y, z) / glm::vec3(other.getX(), other.getY(), other.getZ());
+    
+    return Vector3(vector.x, vector.y, vector.z);
 
 }
 
@@ -252,63 +276,72 @@ Vector4::~Vector4()
 float Vector4::length() const
 {
 
-    return sqrt(x * x + y * y + z * z + w * w);
+    return glm::length(glm::vec4(x, y, z, w));
 
 }
 
 float Vector4::dot(Vector4 other) const
 {
 
-    return x * other.getX() + y * other.getY() + z * other.getZ() + w * other.getW();
+    return glm::dot(glm::vec4(x, y, z, w), glm::vec4(other.getX(), other.getY(), other.getZ(), other.getW()));
 
 }
 
 void Vector4::normalize()
 {
 
-    float size = length();
-
-    x /= size;
-    y /= size;
-    z /= size;
-    w /= size;
+    glm::vec4 vector = glm::normalize(glm::vec4(x, y, z, w));
+    
+    x = vector.x;
+    y = vector.y;
+    z = vector.z;
+    w = vector.w;
 
 }
 
 Vector4 Vector4::normalized() const
 {
 
-    float size = length();
-
-    return Vector4(x / size, y / size, z / size, w / size);
+    Vector4 vector(x, y, z, w);
+    vector.normalize();
+    
+    return vector;
 
 }
 
 Vector4 Vector4::operator+(Vector4 other) const
 {
 
-    return Vector4(x + other.getX(), y + other.getY(), z + other.getZ(), w + other.getW());
+    glm::vec4 vector = glm::vec4(x, y, z, w) + glm::vec4(other.getX(), other.getY(), other.getZ(), other.getW());
+    
+    return Vector4(vector.x, vector.y, vector.z, vector.w);
 
 }
 
 Vector4 Vector4::operator-(Vector4 other) const
 {
 
-    return Vector4(x - other.getX(), y - other.getY(), z - other.getZ(), w - other.getW());
+    glm::vec4 vector = glm::vec4(x, y, z, w) + glm::vec4(other.getX(), other.getY(), other.getZ(), other.getW());
+    
+    return Vector4(vector.x, vector.y, vector.z, vector.w);
 
 }
 
 Vector4 Vector4::operator*(Vector4 other) const
 {
 
-    return Vector4(x * other.getX(), y * other.getY(), z * other.getZ(), w * other.getW());
+    glm::vec4 vector = glm::vec4(x, y, z, w) + glm::vec4(other.getX(), other.getY(), other.getZ(), other.getW());
+    
+    return Vector4(vector.x, vector.y, vector.z, vector.w);
 
 }
 
 Vector4 Vector4::operator/(Vector4 other) const
 {
 
-    return Vector4(x / other.getX(), y / other.getY(), z / other.getZ(), w / other.getW());
+    glm::vec4 vector = glm::vec4(x, y, z, w) + glm::vec4(other.getX(), other.getY(), other.getZ(), other.getW());
+    
+    return Vector4(vector.x, vector.y, vector.z, vector.w);
 
 }
 
@@ -381,22 +414,42 @@ Matrix3::~Matrix3()
 void Matrix3::createIdentity()
 {
 
-    values[0][0] = 1;
-    values[0][1] = 0;
-    values[0][2] = 0;
+    glm::mat3 matrix;
+    
+    for(int i = 0; i < 3; i++)
+    {
 
-    values[1][0] = 0;
-    values[1][1] = 1;
-    values[1][2] = 0;
+        for(int j = 0; j < 3; j++)
+        {
 
-    values[2][0] = 0;
-    values[2][1] = 0;
-    values[2][2] = 1;
+            values[i][j] = matrix[i][j];
+
+        }
+
+    }
 
 }
 
 Matrix3 Matrix3::operator*(Matrix3 other) const
 {
+    
+    glm::mat3 matrix1;
+    glm::mat3 matrix2;
+    
+    for(int i = 0; i < 3; i++)
+    {
+
+        for(int j = 0; j < 3; j++)
+        {
+
+            matrix1[i][j] = values[i][j];
+            matrix2[i][j] = other.getValue(i, j);
+
+        }
+
+    }
+    
+    glm::mat3 matrix = matrix1 * matrix2;
 
     Matrix3 result;
 
@@ -406,7 +459,7 @@ Matrix3 Matrix3::operator*(Matrix3 other) const
         for(int j = 0; j < 3; j++)
         {
 
-            result.setValue(i, j, values[i][0] * other.getValue(0, j) + values[i][1] * other.getValue(1, j) + values[i][2] * other.getValue(2, j));
+            result.setValue(i, j, matrix[i][j]);
 
         }
 
@@ -464,168 +517,137 @@ Matrix4::~Matrix4()
 void Matrix4::createIdentity()
 {
 
-    values[0][0] = 1;
-    values[0][1] = 0;
-    values[0][2] = 0;
-    values[0][3] = 0;
+    glm::mat4 matrix(1.0f);
+    
+    for(int i = 0; i < 4; i++)
+    {
 
-    values[1][0] = 0;
-    values[1][1] = 1;
-    values[1][2] = 0;
-    values[1][3] = 0;
+        for(int j = 0; j < 4; j++)
+        {
 
-    values[2][0] = 0;
-    values[2][1] = 0;
-    values[2][2] = 1;
-    values[2][3] = 0;
+            values[i][j] = matrix[i][j];
 
-    values[3][0] = 0;
-    values[3][1] = 0;
-    values[3][2] = 0;
-    values[3][3] = 1;
+        }
+
+    }
 
 }
 
 void Matrix4::createTranslation(Vector3 translation)
 {
 
-    values[0][0] = 1;
-    values[0][1] = 0;
-    values[0][2] = 0;
-    values[0][3] = 0;
+    glm::mat4 matrix = glm::translate(glm::mat4(1.0f), glm::vec3(translation.getX(), translation.getY(), translation.getZ()));
+    
+    for(int i = 0; i < 4; i++)
+    {
 
-    values[1][0] = 0;
-    values[1][1] = 1;
-    values[1][2] = 0;
-    values[1][3] = 0;
+        for(int j = 0; j < 4; j++)
+        {
 
-    values[2][0] = 0;
-    values[2][1] = 0;
-    values[2][2] = 1;
-    values[2][3] = 0;
+            values[i][j] = matrix[i][j];
 
-    values[3][0] = translation.getX();
-    values[3][1] = translation.getY();
-    values[3][2] = translation.getZ();
-    values[3][3] = 1;
+        }
+
+    }
 
 }
 
-void Matrix4::createRotation(Quaternion rotation)
+void Matrix4::createRotation(Vector3 axis, float angle)
 {
 
-    Vector3 right(1.0f - 2.0f * (rotation.getValues().getY() * rotation.getValues().getY() + rotation.getValues().getZ() * rotation.getValues().getZ()), 2.0f * (rotation.getValues().getX() * rotation.getValues().getY() - rotation.getValues().getW() * rotation.getValues().getZ()), 2.0f * (rotation.getValues().getX() * rotation.getValues().getZ() + rotation.getValues().getW() * rotation.getValues().getY()));
-    Vector3 up(2.0f * (rotation.getValues().getX() * rotation.getValues().getY() + rotation.getValues().getW() * rotation.getValues().getZ()), 1.0f - 2.0f * (rotation.getValues().getX() * rotation.getValues().getX() + rotation.getValues().getZ() * rotation.getValues().getZ()), 2.0f * (rotation.getValues().getY() * rotation.getValues().getZ() - rotation.getValues().getW() * rotation.getValues().getX()));
-    Vector3 forward(2.0f * (rotation.getValues().getX() * rotation.getValues().getZ() - rotation.getValues().getW() * rotation.getValues().getY()), 2.0f * (rotation.getValues().getY() * rotation.getValues().getZ() + rotation.getValues().getW() * rotation.getValues().getX()), 1.0f - 2.0f * (rotation.getValues().getX() * rotation.getValues().getX() + rotation.getValues().getY() * rotation.getValues().getY()));
+    glm::mat4 matrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(axis.getX(), axis.getY(), axis.getZ()));
+    
+    for(int i = 0; i < 4; i++)
+    {
 
-    values[0][0] = right.getX();
-    values[0][1] = up.getX();
-    values[0][2] = forward.getX();
-    values[0][3] = 0;
+        for(int j = 0; j < 4; j++)
+        {
 
-    values[1][0] = right.getY();
-    values[1][1] = up.getY();
-    values[1][2] = forward.getY();
-    values[1][3] = 0;
+            values[i][j] = matrix[i][j];
 
-    values[2][0] = right.getZ();
-    values[2][1] = up.getZ();
-    values[2][2] = forward.getZ();
-    values[2][3] = 0;
+        }
 
-    values[3][0] = 0;
-    values[3][1] = 0;
-    values[3][2] = 0;
-    values[3][3] = 1;
+    }
 
 }
 
 void Matrix4::createScale(Vector3 scale)
 {
 
-    values[0][0] = scale.getX();
-    values[0][1] = 0;
-    values[0][2] = 0;
-    values[0][3] = 0;
+    glm::mat4 matrix = glm::scale(glm::mat4(1.0f), glm::vec3(scale.getX(), scale.getY(), scale.getZ()));
+    
+    for(int i = 0; i < 4; i++)
+    {
 
-    values[1][0] = 0;
-    values[1][1] = scale.getY();
-    values[1][2] = 0;
-    values[1][3] = 0;
+        for(int j = 0; j < 4; j++)
+        {
 
-    values[2][0] = 0;
-    values[2][1] = 0;
-    values[2][2] = scale.getZ();
-    values[2][3] = 0;
+            values[i][j] = matrix[i][j];
 
-    values[3][0] = 0;
-    values[3][1] = 0;
-    values[3][2] = 0;
-    values[3][3] = 1;
+        }
+
+    }
 
 }
 
 void Matrix4::createOrthographic(float left, float right, float bottom, float top, float zNear, float zFar)
 {
 
-    float width = right - left;
-    float height = top - bottom;
-    float depth = zFar - zNear;
+    glm::mat4 matrix = glm::ortho(left, right, bottom, top, zNear, zFar);
+    
+    for(int i = 0; i < 4; i++)
+    {
 
-    values[0][0] = 2.0f / width;
-    values[0][1] = 0;
-    values[0][2] = 0;
-    values[0][3] = -(right + left) / width;
+        for(int j = 0; j < 4; j++)
+        {
 
-    values[1][0] = 0;
-    values[1][1] = 2.0f / height;
-    values[1][2] = 0;
-    values[1][3] = -(top + bottom) / height;
+            values[i][j] = matrix[i][j];
 
-    values[2][0] = 0;
-    values[2][1] = 0;
-    values[2][2] = -2.0f / depth;
-    values[2][3] = -(zFar + zNear) / depth;
+        }
 
-    values[3][0] = 0;
-    values[3][1] = 0;
-    values[3][2] = 0;
-    values[3][3] = 1;
+    }
 
 }
 
 void Matrix4::createPerspective(float fov, float aspect, float zNear, float zFar)
 {
 
-    float bottom = -(zNear * tan(0.5f * fov));
-    float top = -bottom;
-    float left = bottom * aspect;
-    float right = top * aspect;
+    glm::mat4 matrix = glm::perspective(fov, aspect, zNear, zFar);
+    
+    for(int i = 0; i < 4; i++)
+    {
 
-    values[0][0] = (2.0f * zNear) / (right - left);
-    values[0][1] = 0;
-    values[0][2] = 0;
-    values[0][3] = 0;
+        for(int j = 0; j < 4; j++)
+        {
 
-    values[1][0] = 0;
-    values[1][1] = (2.0f * zNear) / (top - bottom);
-    values[1][2] = 0;
-    values[1][3] = 0;
+            values[i][j] = matrix[i][j];
 
-    values[2][0] = (right + left) / (right - left);
-    values[2][1] = (top + bottom) / (top - bottom);
-    values[2][2] = -(zFar + zNear) / (zFar - zNear);
-    values[2][3] = -1;
+        }
 
-    values[3][0] = 0;
-    values[3][1] = 0;
-    values[3][2] = -(2.0f * zFar * zNear) / (zFar - zNear);
-    values[3][3] = 0;
+    }
 
 }
 
 Matrix4 Matrix4::operator*(Matrix4 other) const
 {
+
+    glm::mat4 matrix1;
+    glm::mat4 matrix2;
+    
+    for(int i = 0; i < 4; i++)
+    {
+
+        for(int j = 0; j < 4; j++)
+        {
+
+            matrix1[i][j] = values[i][j];
+            matrix2[i][j] = other.getValue(i, j);
+
+        }
+
+    }
+    
+    glm::mat4 matrix = matrix1 * matrix2;
 
     Matrix4 result;
 
@@ -635,7 +657,7 @@ Matrix4 Matrix4::operator*(Matrix4 other) const
         for(int j = 0; j < 4; j++)
         {
 
-            result.setValue(i, j, values[i][0] * other.getValue(0, j) + values[i][1] * other.getValue(1, j) + values[i][2] * other.getValue(2, j) + values[i][3] * other.getValue(3, j));
+            result.setValue(i, j, matrix[i][j]);
 
         }
 
@@ -706,103 +728,126 @@ Quaternion::~Quaternion()
 Quaternion Quaternion::conjugate() const
 {
 
-    return Quaternion(-x, -y, -z, w);
+    glm::quat quaternion = glm::conjugate(glm::quat(w, x, y, z));
+    
+    return Quaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
 
 }
 
 void Quaternion::normalize()
 {
 
-    float size = getValues().length();
-
-    x /= size;
-    y /= size;
-    z /= size;
-    w /= size;
+    glm::quat quaternion = glm::normalize(glm::quat(w, x, y, z));
+    
+    x = quaternion.x;
+    y = quaternion.y;
+    z = quaternion.z;
+    w = quaternion.w;
 
 }
 
 Quaternion Quaternion::normalized() const
 {
 
-    float size = getValues().length();
-
-    return Quaternion(x / size, y / size, z / size, w / size);
+    Quaternion quaternion(x, y, z, w);
+    quaternion.normalize();
+    
+    return quaternion;
 
 }
 
 void Quaternion::rotate(Vector3 axis, float angle)
 {
-
-    float sinHalfAngle = sin(angle / 2);
-    float cosHalfAngle = cos(angle / 2);
-
-    Quaternion rotated = (*this) * Quaternion(axis.getX() * sinHalfAngle, axis.getY() * sinHalfAngle, axis.getZ() * sinHalfAngle, cosHalfAngle);
-
-    *this = *this * rotated;
+    
+    glm::quat quaternion = glm::rotate(glm::quat(w, x, y, z), angle * (3.14f / 180.0f), glm::vec3(axis.getX(), axis.getY(), axis.getZ()));
+    
+    x = quaternion.x;
+    y = quaternion.y;
+    z = quaternion.z;
+    w = quaternion.w;
+    
+    normalize();
 
 }
 
 Vector3 Quaternion::getLeft() const
 {
 
-    Quaternion left = (*this) * this->conjugate() * Vector3(-1.0f, 0.0f, 0.0f);
-
-    return Vector3(left.getValues().getX(), left.getValues().getY(), left.getValues().getZ()).normalized();
+    Vector3 left(-1.0f, 0.0f, 0.0f);
+    left.rotate(*this);
+    
+    return left.normalized();
 
 }
 
 Vector3 Quaternion::getRight() const
 {
 
-    Quaternion right = (*this) * this->conjugate() * Vector3(1.0f, 0.0f, 0.0f);
-
-    return Vector3(right.getValues().getX(), right.getValues().getY(), right.getValues().getZ()).normalized();
+    Vector3 right(1.0f, 0.0f, 0.0f);
+    right.rotate(*this);
+    
+    return right.normalized();
 
 }
 
 Vector3 Quaternion::getDown() const
 {
 
-    Quaternion down = (*this) * this->conjugate() * Vector3(0.0f, -1.0f, 0.0f);
-
-    return Vector3(down.getValues().getX(), down.getValues().getY(), down.getValues().getZ()).normalized();
+    Vector3 down(0.0f, -1.0f, 0.0f);
+    down.rotate(*this);
+    
+    return down.normalized();
 
 }
 
 Vector3 Quaternion::getUp() const
 {
 
-    Quaternion up = (*this) * this->conjugate() * Vector3(0.0f, 1.0f, 0.0f);
-
-    return Vector3(up.getValues().getX(), up.getValues().getY(), up.getValues().getZ()).normalized();
+    Vector3 up(0.0f, 1.0f, 0.0f);
+    up.rotate(*this);
+    
+    return up.normalized();
 
 }
 
 Vector3 Quaternion::getForward() const
 {
 
-    Quaternion forward = (*this) * this->conjugate() * Vector3(0.0f, 0.0f, -1.0f);
-
-    return Vector3(forward.getValues().getX(), forward.getValues().getY(), forward.getValues().getZ()).normalized();
+    Vector3 forward(0.0f, 0.0f, -1.0f);
+    forward.rotate(*this);
+    
+    return forward.normalized();
 
 }
 
 Vector3 Quaternion::getBack() const
 {
 
-    Quaternion back = (*this) * this->conjugate() * Vector3(0.0f, 0.0f, 1.0f);
-
-    return Vector3(back.getValues().getX(), back.getValues().getY(), back.getValues().getZ()).normalized();
+    Vector3 back(0.0f, 0.0f, 1.0f);
+    back.rotate(*this);
+    
+    return back.normalized();
 
 }
 
 Matrix4 Quaternion::toRotationMatrix() const
 {
 
+    glm::mat4 matrix = glm::mat4_cast(glm::quat(w, x, y, z));
+    
     Matrix4 result;
+    
+    for(int i = 0; i < 4; i++)
+    {
 
-    result.createRotation(*this);
+        for(int j = 0; j < 4; j++)
+        {
+
+            result.setValue(i, j, matrix[i][j]);
+
+        }
+
+    }
 
     return result;
 
@@ -810,27 +855,25 @@ Matrix4 Quaternion::toRotationMatrix() const
 
 Quaternion Quaternion::operator*(Vector3 other) const
 {
+    
+    glm::quat quaternion1(w, x, y, z);
+    glm::quat quaternion2(0.0f, other.getX(), other.getY(), other.getZ());
+    
+    glm::quat quaternion = quaternion1 * quaternion2;
 
-    float x_ = w * other.getX() + y * other.getZ() - z * other.getY();
-    float y_ = w * other.getY() + z * other.getX() - x * other.getZ();
-    float z_ = w * other.getZ() + x * other.getY() - y * other.getX();
-    float w_ = -x * other.getX() - y * other.getY() - z * other.getZ();
-
-    return Quaternion(x_, y_, z_, w_);
+    return Quaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
 
 }
 
 Quaternion Quaternion::operator*(Quaternion other) const
 {
 
-    Vector4 r = other.getValues();
+    glm::quat quaternion1(w, x, y, z);
+    glm::quat quaternion2(other.getValues().getW(), other.getValues().getX(), other.getValues().getY(), other.getValues().getZ());
+    
+    glm::quat quaternion = quaternion1 * quaternion2;
 
-    float x_ = x * r.getW() + w * r.getX() + y * r.getZ() - z * r.getY();
-    float y_ = y * r.getW() + w * r.getY() + z * r.getX() - x * r.getZ();
-    float z_ = z * r.getW() + w * r.getZ() + x * r.getY() - y * r.getX();
-    float w_ = w * r.getW() - x * r.getX() - y * r.getY() - z * r.getZ();
-
-    return Quaternion(x_, y_, z_, w_);
+    return Quaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
 
 }
 

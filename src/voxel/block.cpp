@@ -14,15 +14,10 @@ Block::Block(int x, int y, int z)
     this->y = y;
     this->z = z;
 
-    updateMesh();
-
 }
 
 Block::~Block()
 {
-
-    updateMesh();
-    delete mesh;
 
 }
 
@@ -31,20 +26,17 @@ void Block::update()
 
 }
 
-void Block::render()
+GLfloat* Block::getVertices() const
 {
 
-    mesh->draw();
+    return new GLfloat[BLOCK_VERTICES] {-0.5f + x, -0.5f + y, 0.5f + z, -0.5f + x, 0.5f + y, 0.5f + z, 0.5f + x, 0.5f + y, 0.5f + z, 0.5f + x, -0.5f + y, 0.5f + z, -0.5f + x, -0.5f + y, -0.5f + z, -0.5f + x, 0.5f + y, -0.5f + z, 0.5f + x, 0.5f + y, -0.5f + z, 0.5f + x, -0.5f + y, -0.5f + z};
 
 }
 
-void Block::updateMesh()
+GLuint* Block::getIndicies() const
 {
 
-    GLfloat vertices[24] = {-0.5f + x, -0.5f + y, 0.5f + z, -0.5f + x, 0.5f + y, 0.5f + z, 0.5f + x, 0.5f + y, 0.5f + z, 0.5f + x, -0.5f + y, 0.5f + z, -0.5f + x, -0.5f + y, -0.5f + z, -0.5f + x, 0.5f + y, -0.5f + z, 0.5f + x, 0.5f + y, -0.5f + z, 0.5f + x, -0.5f + y, -0.5f + z};
-    GLuint indicies[36] = {0, 1, 2, 0, 2, 3, 5, 1, 0, 5, 0, 4, 2, 6, 7, 2, 7, 3, 7, 4, 0, 3, 7, 0, 1, 5, 6, 1, 6, 2, 4, 5, 6, 4, 6, 7};
-
-    mesh = new Mesh(vertices, indicies, 8, 36);
+    return new GLuint[BLOCK_INDICIES] {0, 1, 2, 0, 2, 3, 5, 1, 0, 5, 0, 4, 2, 6, 7, 2, 7, 3, 7, 4, 0, 3, 7, 0, 1, 5, 6, 1, 6, 2, 6, 5, 4, 7, 6, 4};
 
 }
 

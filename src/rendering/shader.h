@@ -7,7 +7,7 @@ class Shader;
 #include <string>
 #include <GL/glew.h>
 
-#include "math3d.h"
+#include "../core/math3d.h"
 
 class Shader
 {

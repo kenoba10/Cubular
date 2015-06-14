@@ -3,8 +3,10 @@
 
 class Block;
 
-#include "math3d.h"
-#include "mesh.h"
+#define BLOCK_VERTICES 24
+#define BLOCK_INDICIES 36
+
+#include "../rendering/mesh.h"
 
 class Block
 {
@@ -14,8 +16,8 @@ class Block
         Block(int x, int y, int z);
         ~Block();
         void update();
-        void render();
-        void updateMesh();
+        GLfloat* getVertices() const;
+        GLuint* getIndicies() const;
         int getX() const;
         int getY() const;
         int getZ() const;
@@ -24,7 +26,6 @@ class Block
         void setZ(int z);
     protected:
     private:
-        Mesh* mesh;
         int x;
         int y;
         int z;

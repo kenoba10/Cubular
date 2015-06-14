@@ -4,6 +4,8 @@
 class Chunk;
 
 #include <sstream>
+#include <map>
+#include <list>
 
 #include "world.h"
 #include "block.h"
@@ -17,10 +19,13 @@ class Chunk
         void update();
         void render();
         Block* getBlock(int x, int y, int z);
-        void setBlock(int x, int y, int z);
+        void setBlock(int x, int y, int z, bool air);
+        void markForRebuild();
     protected:
     private:
-        std::map<std::string, Block> blocks;
+        std::map<std::string, Block*> blocks;
+        Mesh* mesh;
+        bool rebuild;
 
 };
 

@@ -7,14 +7,13 @@ Mesh::Mesh(GLfloat vertices[], GLuint indicies[], GLsizei vertexCount, GLsizei i
     this->indexCount = indexCount;
 
     glGenVertexArrays(1, &vao);
-
     glBindVertexArray(vao);
 
     glGenBuffers(1, &vbo);
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * vertexCount * 3, vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * vertexCount, vertices, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);

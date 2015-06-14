@@ -1,6 +1,6 @@
 #include "player.h"
 
-Player::Player(Window* window) : position(0, 0, 0), rotation(0, 0, 0, 1)
+Player::Player(Window* window) : position(0.0f, 0.0f, 0.0f), rotation(0.0f, 0.0f, 0.0f, 1.0f)
 {
 
     this->window = window;
@@ -18,47 +18,73 @@ void Player::update()
     if(window->getInput().getKey(KEY_A))
     {
 
-        position.setX(position.getX() + 0.5f);
+        position = position + rotation.getLeft();
 
     }
 
     if(window->getInput().getKey(KEY_D))
     {
 
-        position.setX(position.getX() - 0.5f);
+        position = position + rotation.getRight();
 
     }
 
     if(window->getInput().getKey(KEY_LEFT_SHIFT))
     {
 
-        position.setY(position.getY() + 0.5f);
+        position = position + Vector3(0.0f, -1.0f, 0.0f);
 
     }
 
     if(window->getInput().getKey(KEY_SPACE))
     {
 
-        position.setY(position.getY() - 0.5f);
+        position = position + Vector3(0.0f, 1.0f, 0.0f);
 
     }
 
     if(window->getInput().getKey(KEY_W))
     {
 
-        position.setZ(position.getZ() + 0.5f);
+        position = position + rotation.getForward();
 
     }
 
     if(window->getInput().getKey(KEY_S))
     {
 
-        position.setZ(position.getZ() - 0.5f);
-
+        position = position + rotation.getBack();
+        
     }
-
+    
     Vector2 centerPosition(window->getWidth() / 2.0f, window->getHeight() / 2.0f);
 
+    if(mouseLocked)
+    {
+
+        Vector2 deltaPosition(window->getInput().getMouseX() - centerPosition.getX(), window->getInput().getMouseY() - centerPosition.getY());
+
+        bool rotateY = deltaPosition.getX() != 0.0f;
+        bool rotateX = deltaPosition.getY() != 0.0f;
+
+        if(rotateY)
+        {
+
+            rotation.rotate(Vector3(0.0f, 1.0f, 0.0f), deltaPosition.getX() * 0.25f);
+        }
+        
+        if(rotateX)
+        {
+
+            rotation.rotate(rotation.getRight(), deltaPosition.getY() * 0.25f);
+
+        }
+        
+        window->getInput().setMouseX(centerPosition.getX());
+        window->getInput().setMouseY(centerPosition.getY());
+        
+    }
+    
     if(window->getInput().getMouseButtonDown(MOUSEBUTTON_LEFT))
     {
 
@@ -79,44 +105,17 @@ void Player::update()
 
     }
 
-    if(mouseLocked)
-    {
-
-        Vector2 deltaPosition(window->getInput().getMouseX() - centerPosition.getX(), window->getInput().getMouseY() - centerPosition.getY());
-
-        bool rotateY = deltaPosition.getX() != 0.0f;
-        bool rotateX = deltaPosition.getY() != 0.0f;
-
-        if(rotateY)
-        {
-
-            //Rotate Y-Axis
-        }
-
-        if(rotateX)
-        {
-
-            //Rotate X-Axis
-
-        }
-
-        window->getInput().setMouseX(centerPosition.getX());
-        window->getInput().setMouseY(centerPosition.getY());
-
-    }
-
 }
 
 Matrix4 Player::getTransformation() const
 {
 
     Matrix4 translationMatrix;
-    translationMatrix.createTranslation(position);
+    translationMatrix.createTranslation(Vector3(-1.0f, -1.0f, -1.0f) * position);
 
-    Matrix4 rotationMatrix;
-    rotationMatrix.createRotation(rotation);
+    Matrix4 rotationMatrix = rotation.toRotationMatrix();
 
-    return translationMatrix * rotationMatrix;
+    return rotationMatrix * translationMatrix;
 
 }
 

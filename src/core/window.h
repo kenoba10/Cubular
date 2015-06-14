@@ -27,6 +27,7 @@ class Window
         GLFWwindow* window;
         Input* input;
         Game* game;
+        double lastTickTime;
         bool running;
         void init();
         void update();

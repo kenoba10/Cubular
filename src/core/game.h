@@ -4,7 +4,7 @@
 class Game;
 
 #include "window.h"
-#include "voxelengine.h"
+#include "../voxel/voxelengine.h"
 
 class Game
 {

@@ -3,13 +3,13 @@
 
 class VoxelEngine;
 
-#include "window.h"
-#include "math3d.h"
-#include "shader.h"
+#include "../core/window.h"
+#include "../core/math3d.h"
+#include "../rendering/shader.h"
 #include "player.h"
 #include "world.h"
-#include "fileutils.h"
-#include "osutils.h"
+#include "../utils/fileutils.h"
+#include "../utils/osutils.h"
 
 class VoxelEngine
 {

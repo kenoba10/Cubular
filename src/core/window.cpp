@@ -11,7 +11,8 @@ Window::Window(Game* game)
 {
 
     this->game = game;
-
+    
+    lastTickTime = 0.0;
     running = false;
 
     this->game->setWindow(this);
@@ -33,7 +34,15 @@ void Window::run()
     while(running)
     {
 
-        update();
+        if((glfwGetTime() - lastTickTime) >= 0.05)
+        {
+            
+            lastTickTime = glfwGetTime();
+            
+            update();
+            
+        }
+        
         render();
 
         if(glfwWindowShouldClose(window))

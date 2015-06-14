@@ -8,7 +8,12 @@ struct Matrix3;
 struct Matrix4;
 struct Quaternion;
 
-#include <math.h>
+#include <glm/glm.hpp>
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 struct Vector2
 {
@@ -18,7 +23,6 @@ struct Vector2
         ~Vector2();
         float length() const;
         float dot(Vector2 other) const;
-        float cross(Vector2 other) const;
         void normalize();
         Vector2 normalized() const;
         Vector2 operator+(Vector2 other) const;
@@ -47,6 +51,7 @@ struct Vector3
         Vector3 cross(Vector3 other) const;
         void normalize();
         Vector3 normalized() const;
+        void rotate(Quaternion rotation);
         Vector3 operator+(Vector3 other) const;
         Vector3 operator-(Vector3 other) const;
         Vector3 operator*(Vector3 other) const;
@@ -121,7 +126,7 @@ struct Matrix4
         ~Matrix4();
         void createIdentity();
         void createTranslation(Vector3 translation);
-        void createRotation(Quaternion rotation);
+        void createRotation(Vector3 axis, float angle);
         void createScale(Vector3 scale);
         void createOrthographic(float left, float right, float bottom, float top, float zNear, float zFar);
         void createPerspective(float fov, float aspect, float zNear, float zFar);
