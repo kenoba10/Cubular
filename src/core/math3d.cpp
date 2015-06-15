@@ -47,6 +47,26 @@ Vector2 Vector2::normalized() const
 
 }
 
+void Vector2::rotate(float angle)
+{
+    
+    glm::vec2 vector = glm::rotate(glm::vec2(x, y), glm::radians(angle));
+    
+    x = vector.x;
+    y = vector.y;
+    
+}
+
+void Vector2::rotate(Quaternion rotation)
+{
+    
+    glm::vec4 vector = glm::rotate(glm::quat(rotation.getValues().getW(), rotation.getValues().getX(), rotation.getValues().getY(), rotation.getValues().getZ()), glm::vec4(x, y, 0.0f, 0.0f));
+    
+    x = vector.x;
+    y = vector.y;
+    
+}
+
 Vector2 Vector2::operator+(Vector2 other) const
 {
 
@@ -169,14 +189,40 @@ Vector3 Vector3::normalized() const
 
 }
 
+void Vector3::rotate(float pitch, float yaw, float roll)
+{
+    
+    glm::vec3 vector(x, y, z);
+    
+    vector = glm::rotateX(vector, glm::radians(pitch));
+    vector = glm::rotateY(vector, glm::radians(yaw));
+    vector = glm::rotateZ(vector, glm::radians(roll));
+    
+    x = vector.x;
+    y = vector.y;
+    z = vector.z;
+    
+}
+
+void Vector3::rotate(Vector3 axis, float angle)
+{
+    
+    glm::vec3 vector = glm::rotate(glm::vec3(x, y, z), glm::radians(angle), glm::vec3(axis.getX(), axis.getY(), axis.getZ()));
+    
+    x = vector.x;
+    y = vector.y;
+    z = vector.z;
+    
+}
+
 void Vector3::rotate(Quaternion rotation)
 {
     
-    Quaternion rotated = rotation.conjugate() * *this * rotation;
+    glm::vec4 vector = glm::rotate(glm::quat(rotation.getValues().getW(), rotation.getValues().getX(), rotation.getValues().getY(), rotation.getValues().getZ()), glm::vec4(x, y, z, 0.0f));
     
-    x = rotated.getValues().getX();
-    y = rotated.getValues().getY();
-    z = rotated.getValues().getZ();
+    x = vector.x;
+    y = vector.y;
+    z = vector.z;
     
 }
 
@@ -321,7 +367,7 @@ Vector4 Vector4::operator+(Vector4 other) const
 Vector4 Vector4::operator-(Vector4 other) const
 {
 
-    glm::vec4 vector = glm::vec4(x, y, z, w) + glm::vec4(other.getX(), other.getY(), other.getZ(), other.getW());
+    glm::vec4 vector = glm::vec4(x, y, z, w) - glm::vec4(other.getX(), other.getY(), other.getZ(), other.getW());
     
     return Vector4(vector.x, vector.y, vector.z, vector.w);
 
@@ -330,7 +376,7 @@ Vector4 Vector4::operator-(Vector4 other) const
 Vector4 Vector4::operator*(Vector4 other) const
 {
 
-    glm::vec4 vector = glm::vec4(x, y, z, w) + glm::vec4(other.getX(), other.getY(), other.getZ(), other.getW());
+    glm::vec4 vector = glm::vec4(x, y, z, w) * glm::vec4(other.getX(), other.getY(), other.getZ(), other.getW());
     
     return Vector4(vector.x, vector.y, vector.z, vector.w);
 
@@ -339,7 +385,7 @@ Vector4 Vector4::operator*(Vector4 other) const
 Vector4 Vector4::operator/(Vector4 other) const
 {
 
-    glm::vec4 vector = glm::vec4(x, y, z, w) + glm::vec4(other.getX(), other.getY(), other.getZ(), other.getW());
+    glm::vec4 vector = glm::vec4(x, y, z, w) / glm::vec4(other.getX(), other.getY(), other.getZ(), other.getW());
     
     return Vector4(vector.x, vector.y, vector.z, vector.w);
 
@@ -590,6 +636,25 @@ void Matrix4::createScale(Vector3 scale)
 
 }
 
+void Matrix4::createLookAt(Vector3 position, Vector3 target, Vector3 up)
+{
+    
+    glm::mat4 matrix = glm::lookAt(glm::vec3(position.getX(), position.getY(), position.getZ()), glm::vec3(target.getX(), target.getY(), target.getZ()), glm::vec3(up.getX(), up.getY(), up.getZ()));
+    
+    for(int i = 0; i < 4; i++)
+    {
+
+        for(int j = 0; j < 4; j++)
+        {
+
+            values[i][j] = matrix[i][j];
+
+        }
+
+    }
+    
+}
+
 void Matrix4::createOrthographic(float left, float right, float bottom, float top, float zNear, float zFar)
 {
 
@@ -759,7 +824,7 @@ Quaternion Quaternion::normalized() const
 void Quaternion::rotate(Vector3 axis, float angle)
 {
     
-    glm::quat quaternion = glm::rotate(glm::quat(w, x, y, z), angle * (3.14f / 180.0f), glm::vec3(axis.getX(), axis.getY(), axis.getZ()));
+    glm::quat quaternion = glm::rotate(glm::quat(w, x, y, z), glm::radians(angle), glm::vec3(axis.getX(), axis.getY(), axis.getZ()));
     
     x = quaternion.x;
     y = quaternion.y;
@@ -772,61 +837,43 @@ void Quaternion::rotate(Vector3 axis, float angle)
 
 Vector3 Quaternion::getLeft() const
 {
-
-    Vector3 left(-1.0f, 0.0f, 0.0f);
-    left.rotate(*this);
     
-    return left.normalized();
+    return Vector3(-1.0f * (1.0f - 2.0f * (y * y + z * z)), -1.0f * (2.0f * (x * y - w * z)), -1.0f * (2.0f * (x * z + w * y))).normalized();
 
 }
 
 Vector3 Quaternion::getRight() const
 {
 
-    Vector3 right(1.0f, 0.0f, 0.0f);
-    right.rotate(*this);
-    
-    return right.normalized();
+    return Vector3(1.0f - 2.0f * (y * y + z * z), 2.0f * (x * y - w * z), 2.0f * (x * z + w * y)).normalized();
 
 }
 
 Vector3 Quaternion::getDown() const
 {
 
-    Vector3 down(0.0f, -1.0f, 0.0f);
-    down.rotate(*this);
-    
-    return down.normalized();
+    return Vector3(-1.0f * (2.0f * (x * y + w * z)), -1.0f * (1.0f - 2.0f * (x * x + z * z)), -1.0f * (2.0f * (y * z - w * x))).normalized();
 
 }
 
 Vector3 Quaternion::getUp() const
 {
 
-    Vector3 up(0.0f, 1.0f, 0.0f);
-    up.rotate(*this);
-    
-    return up.normalized();
+    return Vector3(2.0f * (x * y + w * z), 1.0f - 2.0f * (x * x + z * z), 2.0f * (y * z - w * x)).normalized();
 
 }
 
 Vector3 Quaternion::getForward() const
 {
 
-    Vector3 forward(0.0f, 0.0f, -1.0f);
-    forward.rotate(*this);
-    
-    return forward.normalized();
+    return Vector3(-1.0f * (2.0f * (x * z - w * y)), -1.0f * (2.0f * (y * z + w * x)), -1.0f * (1.0f - 2.0f * (x * x + y * y))).normalized();
 
 }
 
 Vector3 Quaternion::getBack() const
 {
 
-    Vector3 back(0.0f, 0.0f, 1.0f);
-    back.rotate(*this);
-    
-    return back.normalized();
+    return Vector3(2.0f * (x * z - w * y), 2.0f * (y * z + w * x), 1.0f - 2.0f * (x * x + y * y)).normalized();
 
 }
 
@@ -882,4 +929,14 @@ Vector4 Quaternion::getValues() const
 
     return Vector4(x, y, z, w);
 
+}
+
+void Quaternion::clear()
+{
+    
+    x = 0.0f;
+    y = 0.0f;
+    z = 0.0f;
+    w = 1.0f;
+    
 }

@@ -1,9 +1,15 @@
 #include "player.h"
 
-Player::Player(Window* window) : position(0.0f, 0.0f, 0.0f), rotation(0.0f, 0.0f, 0.0f, 1.0f)
+Player::Player(Window* window) : position(0.0f, 0.0f, 0.0f), right(1.0f, 0.0f, 0.0f), up(0.0f, 1.0f, 0.0f), back(0.0f, 0.0f, 1.0f)
 {
 
     this->window = window;
+    
+    pitch = 0.0f;
+    yaw = 0.0f;
+    roll = 0.0f;
+    
+    mouseLocked = false;
 
 }
 
@@ -18,42 +24,42 @@ void Player::update()
     if(window->getInput().getKey(KEY_A))
     {
 
-        position = position + rotation.getLeft();
+        position = position - right * Vector3(PLAYER_SPEED, PLAYER_SPEED, PLAYER_SPEED);
 
     }
 
     if(window->getInput().getKey(KEY_D))
     {
 
-        position = position + rotation.getRight();
+        position = position + right * Vector3(PLAYER_SPEED, PLAYER_SPEED, PLAYER_SPEED);
 
     }
 
     if(window->getInput().getKey(KEY_LEFT_SHIFT))
     {
 
-        position = position + Vector3(0.0f, -1.0f, 0.0f);
+        position = position - up * Vector3(PLAYER_SPEED, PLAYER_SPEED, PLAYER_SPEED);
 
     }
 
     if(window->getInput().getKey(KEY_SPACE))
     {
 
-        position = position + Vector3(0.0f, 1.0f, 0.0f);
+        position = position + up * Vector3(PLAYER_SPEED, PLAYER_SPEED, PLAYER_SPEED);
 
     }
 
     if(window->getInput().getKey(KEY_W))
     {
 
-        position = position + rotation.getForward();
+        position = position - back * Vector3(PLAYER_SPEED, PLAYER_SPEED, PLAYER_SPEED);
 
     }
 
     if(window->getInput().getKey(KEY_S))
     {
 
-        position = position + rotation.getBack();
+        position = position + back * Vector3(PLAYER_SPEED, PLAYER_SPEED, PLAYER_SPEED);
         
     }
     
@@ -70,18 +76,31 @@ void Player::update()
         if(rotateY)
         {
 
-            rotation.rotate(Vector3(0.0f, 1.0f, 0.0f), deltaPosition.getX() * 0.25f);
+            yaw = yaw - deltaPosition.getX() * MOUSE_SENSITIVITY;
         }
         
         if(rotateX)
         {
 
-            rotation.rotate(rotation.getRight(), deltaPosition.getY() * 0.25f);
+            
+            pitch = std::min(std::max(pitch - deltaPosition.getY() * MOUSE_SENSITIVITY, -89.0f), 89.0f);
 
         }
         
-        window->getInput().setMouseX(centerPosition.getX());
-        window->getInput().setMouseY(centerPosition.getY());
+        if(rotateY || rotateX)
+        {
+            
+            Vector3 forward(0.0f, 0.0f, -1.0f);
+            forward.rotate(pitch, yaw, roll);
+            
+            back = Vector3(-forward.getX(), -forward.getY(), -forward.getZ()).normalized();
+            right = forward.cross(Vector3(0.0f, 1.0f, 0.0f)).normalized();
+            up = right.cross(forward).normalized();
+            
+            window->getInput().setMouseX(centerPosition.getX());
+            window->getInput().setMouseY(centerPosition.getY());
+            
+        }
         
     }
     
@@ -104,7 +123,7 @@ void Player::update()
         mouseLocked = false;
 
     }
-
+    
 }
 
 Matrix4 Player::getTransformation() const
@@ -113,7 +132,8 @@ Matrix4 Player::getTransformation() const
     Matrix4 translationMatrix;
     translationMatrix.createTranslation(Vector3(-1.0f, -1.0f, -1.0f) * position);
 
-    Matrix4 rotationMatrix = rotation.toRotationMatrix();
+    Matrix4 rotationMatrix;
+    rotationMatrix.createLookAt(position, position - back, up);
 
     return rotationMatrix * translationMatrix;
 

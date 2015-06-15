@@ -8,12 +8,15 @@ struct Matrix3;
 struct Matrix4;
 struct Quaternion;
 
+#include <math.h>
 #include <glm/glm.hpp>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/rotate_vector.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 struct Vector2
 {
@@ -25,6 +28,8 @@ struct Vector2
         float dot(Vector2 other) const;
         void normalize();
         Vector2 normalized() const;
+        void rotate(float angle);
+        void rotate(Quaternion rotation);
         Vector2 operator+(Vector2 other) const;
         Vector2 operator-(Vector2 other) const;
         Vector2 operator*(Vector2 other) const;
@@ -51,6 +56,8 @@ struct Vector3
         Vector3 cross(Vector3 other) const;
         void normalize();
         Vector3 normalized() const;
+        void rotate(float pitch, float yaw, float raw);
+        void rotate(Vector3 axis, float angle);
         void rotate(Quaternion rotation);
         Vector3 operator+(Vector3 other) const;
         Vector3 operator-(Vector3 other) const;
@@ -128,6 +135,7 @@ struct Matrix4
         void createTranslation(Vector3 translation);
         void createRotation(Vector3 axis, float angle);
         void createScale(Vector3 scale);
+        void createLookAt(Vector3 position, Vector3 target, Vector3 up);
         void createOrthographic(float left, float right, float bottom, float top, float zNear, float zFar);
         void createPerspective(float fov, float aspect, float zNear, float zFar);
         Matrix4 operator*(Matrix4 other) const;
@@ -160,6 +168,7 @@ struct Quaternion
         Quaternion operator*(Vector3 other) const;
         Quaternion operator*(Quaternion other) const;
         Vector4 getValues() const;
+        void clear();
     protected:
     private:
         float x;

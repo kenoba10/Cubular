@@ -7,6 +7,7 @@ Mesh::Mesh(GLfloat vertices[], GLuint indicies[], GLsizei vertexCount, GLsizei i
     this->indexCount = indexCount;
 
     glGenVertexArrays(1, &vao);
+    
     glBindVertexArray(vao);
 
     glGenBuffers(1, &vbo);

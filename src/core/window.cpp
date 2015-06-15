@@ -13,6 +13,7 @@ Window::Window(Game* game)
     this->game = game;
     
     lastTickTime = 0.0;
+    
     running = false;
 
     this->game->setWindow(this);
@@ -34,7 +35,7 @@ void Window::run()
     while(running)
     {
 
-        if((glfwGetTime() - lastTickTime) >= 0.05)
+        if((glfwGetTime() - lastTickTime) >= (1.0 / TICKS_PER_SECOND))
         {
             
             lastTickTime = glfwGetTime();

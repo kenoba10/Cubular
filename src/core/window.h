@@ -3,6 +3,8 @@
 
 class Window;
 
+#define TICKS_PER_SECOND 40
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
