@@ -1,6 +1,6 @@
 #include "player.h"
 
-Player::Player(Window* window) : position(0.0f, 0.0f, 0.0f), right(1.0f, 0.0f, 0.0f), up(0.0f, 1.0f, 0.0f), back(0.0f, 0.0f, 1.0f)
+Player::Player(Window* window) : oldPosition(0.0f, 0.0f, 0.0f), position(0.0f, 0.0f, 0.0f), right(1.0f, 0.0f, 0.0f), up(0.0f, 1.0f, 0.0f), back(0.0f, 0.0f, 1.0f)
 {
 
     this->window = window;
@@ -20,6 +20,8 @@ Player::~Player()
 
 void Player::update()
 {
+    
+    oldPosition = position;
 
     if(window->getInput().getKey(KEY_A))
     {
@@ -76,14 +78,14 @@ void Player::update()
         if(rotateY)
         {
 
-            yaw = yaw - deltaPosition.getX() * MOUSE_SENSITIVITY;
+            yaw = yaw + deltaPosition.getX() * MOUSE_SENSITIVITY;
         }
         
         if(rotateX)
         {
 
             
-            pitch = std::min(std::max(pitch - deltaPosition.getY() * MOUSE_SENSITIVITY, -89.0f), 89.0f);
+            pitch = std::min(std::max(pitch + deltaPosition.getY() * MOUSE_SENSITIVITY, -89.0f), 89.0f);
 
         }
         
@@ -91,11 +93,17 @@ void Player::update()
         {
             
             Vector3 forward(0.0f, 0.0f, -1.0f);
-            forward.rotate(pitch, yaw, roll);
+            
+            right = forward.cross(Vector3(0.0f, 1.0f, 0.0f)).normalized();
+            
+            forward.rotate(right, pitch);
+            forward.rotate(Vector3(0.0f, 1.0f, 0.0f), yaw);
+            
+            right = forward.cross(Vector3(0.0f, 1.0f, 0.0f)).normalized();
             
             back = Vector3(-forward.getX(), -forward.getY(), -forward.getZ()).normalized();
-            right = forward.cross(Vector3(0.0f, 1.0f, 0.0f)).normalized();
-            up = right.cross(forward).normalized();
+            up = forward.cross(right).normalized();
+            right = forward.cross(up).normalized();
             
             window->getInput().setMouseX(centerPosition.getX());
             window->getInput().setMouseY(centerPosition.getY());
@@ -126,16 +134,34 @@ void Player::update()
     
 }
 
-Matrix4 Player::getTransformation() const
+Matrix4 Player::getViewMatrix() const
+{
+    
+    Matrix4 viewMatrix;
+    viewMatrix.createLookAt(position, position - back, up);
+
+    return viewMatrix;
+
+}
+
+int Player::getOldX() const
 {
 
-    Matrix4 translationMatrix;
-    translationMatrix.createTranslation(Vector3(-1.0f, -1.0f, -1.0f) * position);
+    return oldPosition.getX();
 
-    Matrix4 rotationMatrix;
-    rotationMatrix.createLookAt(position, position - back, up);
+}
 
-    return rotationMatrix * translationMatrix;
+int Player::getOldY() const
+{
+
+    return oldPosition.getY();
+
+}
+
+int Player::getOldZ() const
+{
+
+    return oldPosition.getZ();
 
 }
 

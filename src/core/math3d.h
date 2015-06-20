@@ -56,7 +56,6 @@ struct Vector3
         Vector3 cross(Vector3 other) const;
         void normalize();
         Vector3 normalized() const;
-        void rotate(float pitch, float yaw, float raw);
         void rotate(Vector3 axis, float angle);
         void rotate(Quaternion rotation);
         Vector3 operator+(Vector3 other) const;

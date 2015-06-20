@@ -3,14 +3,16 @@
 
 class Player;
 
-#define PLAYER_SPEED 0.25f
-#define MOUSE_SENSITIVITY 0.05f
+#define PLAYER_SPEED 10.0f / TICKS_PER_SECOND
+#define MOUSE_SENSITIVITY 1.0f / TICKS_PER_SECOND
 
 #include <algorithm>
 
 #include "../core/window.h"
 #include "../core/input.h"
 #include "../core/math3d.h"
+#include "world.h"
+#include "chunk.h"
 
 class Player
 {
@@ -19,7 +21,10 @@ class Player
         Player(Window* window);
         ~Player();
         void update();
-        Matrix4 getTransformation() const;
+        Matrix4 getViewMatrix() const;
+        int getOldX() const;
+        int getOldY() const;
+        int getOldZ() const;
         int getX() const;
         int getY() const;
         int getZ() const;
@@ -29,6 +34,7 @@ class Player
     protected:
     private:
         Window* window;
+        Vector3 oldPosition;
         Vector3 position;
         Vector3 right;
         Vector3 up;

@@ -189,21 +189,6 @@ Vector3 Vector3::normalized() const
 
 }
 
-void Vector3::rotate(float pitch, float yaw, float roll)
-{
-    
-    glm::vec3 vector(x, y, z);
-    
-    vector = glm::rotateX(vector, glm::radians(pitch));
-    vector = glm::rotateY(vector, glm::radians(yaw));
-    vector = glm::rotateZ(vector, glm::radians(roll));
-    
-    x = vector.x;
-    y = vector.y;
-    z = vector.z;
-    
-}
-
 void Vector3::rotate(Vector3 axis, float angle)
 {
     
