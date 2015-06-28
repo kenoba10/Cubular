@@ -19,17 +19,11 @@ VoxelEngine::~VoxelEngine()
 
 }
 
-void VoxelEngine::update()
+void VoxelEngine::update(float windowWidth, float windowHeight)
 {
 
     player->update();
-    world->update();
-
-}
-
-void VoxelEngine::render(float windowWidth, float windowHeight)
-{
-
+    
     shader->bind();
 
     Matrix4 projectionMatrix;
@@ -39,6 +33,21 @@ void VoxelEngine::render(float windowWidth, float windowHeight)
     Matrix4 viewMatrix;
     viewMatrix = player->getViewMatrix();
     shader->setUniform("view", viewMatrix);
+
+    shader->unbind();
+    
+    player->getFrustum().setProjectionMatrix(projectionMatrix);
+    player->getFrustum().setViewMatrix(viewMatrix);
+    player->getFrustum().calculateFrustum();
+    
+    world->update();
+
+}
+
+void VoxelEngine::render()
+{
+
+    shader->bind();
 
     world->render();
 

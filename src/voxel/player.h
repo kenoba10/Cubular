@@ -11,8 +11,7 @@ class Player;
 #include "../core/window.h"
 #include "../core/input.h"
 #include "../core/math3d.h"
-#include "world.h"
-#include "chunk.h"
+#include "../physics/frustum.h"
 
 class Player
 {
@@ -21,7 +20,9 @@ class Player
         Player(Window* window);
         ~Player();
         void update();
+        void updateFrustum(float fov, float aspect, float zNear, float zFar);
         Matrix4 getViewMatrix() const;
+        Frustum& getFrustum();
         int getOldX() const;
         int getOldY() const;
         int getOldZ() const;
@@ -34,11 +35,10 @@ class Player
     protected:
     private:
         Window* window;
+        Frustum frustum;
         Vector3 oldPosition;
         Vector3 position;
-        Vector3 right;
-        Vector3 up;
-        Vector3 back;
+        Quaternion rotation;
         float pitch;
         float yaw;
         float roll;

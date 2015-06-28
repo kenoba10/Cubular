@@ -586,7 +586,7 @@ void Matrix4::createTranslation(Vector3 translation)
 void Matrix4::createRotation(Vector3 axis, float angle)
 {
 
-    glm::mat4 matrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(axis.getX(), axis.getY(), axis.getZ()));
+    glm::mat4 matrix = glm::rotate(glm::mat4(1.0f), glm::radians(angle), glm::vec3(axis.getX(), axis.getY(), axis.getZ()));
     
     for(int i = 0; i < 4; i++)
     {
@@ -662,7 +662,7 @@ void Matrix4::createOrthographic(float left, float right, float bottom, float to
 void Matrix4::createPerspective(float fov, float aspect, float zNear, float zFar)
 {
 
-    glm::mat4 matrix = glm::perspective(fov, aspect, zNear, zFar);
+    glm::mat4 matrix = glm::perspective(glm::radians(fov), aspect, zNear, zFar);
     
     for(int i = 0; i < 4; i++)
     {
@@ -725,7 +725,7 @@ float* Matrix4::getValues() const
     vals[0] = values[0][0];
     vals[1] = values[0][1];
     vals[2] = values[0][2];
-    vals[2] = values[0][3];
+    vals[3] = values[0][3];
 
     vals[4] = values[1][0];
     vals[5] = values[1][1];

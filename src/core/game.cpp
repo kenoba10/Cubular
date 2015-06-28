@@ -20,14 +20,14 @@ void Game::init()
 void Game::update()
 {
 
-    voxelEngine->update();
+    voxelEngine->update(window->getWidth(), window->getHeight());
 
 }
 
 void Game::render()
 {
 
-    voxelEngine->render(window->getWidth(), window->getHeight());
+    voxelEngine->render();
 
 }
 
