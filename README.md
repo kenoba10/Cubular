@@ -9,3 +9,7 @@ OpenGL 3.3+
 GLEW 1.12.0-1
 GLFW 3.1.1-1
 GLM 0.9.6.3-1
+
+COMPILE DETAILS:
+
+Compile with C++11 and define either _WINDOWS_, _MAC_, or _LINUX_.
